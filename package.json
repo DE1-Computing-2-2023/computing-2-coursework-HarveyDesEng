@@ -7,10 +7,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "docdash": "^1.2.0",
+    "docdash": "^2.0.1",
     "mocha": "^9.2.2"
   },
   "dependencies": {
-    "ramda": "^0.29.0"
+    "ramda": "^0.29.0",
+    "taffydb": "^2.7.3"
   }
 }
