@@ -39,15 +39,15 @@ main
 }
 
 .grid_container {
+    grid-template-columns: repeat(var(--game-columns), 1fr 4fr);
+    grid-template-rows: repeat(var(--game-rows), 1fr 4fr);
+    gap: var(--grid-gap);
     aspect-ratio: calc(var(--game-columns) / var(--game-rows));
-    margin: auto;
-    margin-bottom: auto;
+    margin: 10%;
+    margin-bottom: 10%;
     max-width: 100%;
     max-height: 100%;
     display: grid;
-    grid-template-columns: repeat(var(--game-columns), 1fr);
-    grid-template-rows: repeat(var(--game-rows), 1fr);
-    gap: var(--grid-gap);
   }
 
 #game_grid
@@ -55,14 +55,36 @@ main
     background-color: rgb(0, 0, 0);
 }
 
-#game_grid td
+#game_grid h_line
 {
     background-color: rgb(49, 49, 49);
-    height: 100px;
-    line-height: 100px;
     color:rgb(171, 171, 171);
     text-align: center;
 }
+
+#game_grid v_line
+{
+    background-color: rgb(49, 49, 49);
+    color:rgb(171, 171, 171);
+    text-align: center;
+}
+
+#game_grid box
+{
+    background-color: rgb(70, 85, 144);
+    color:rgb(43, 43, 43);
+    text-align: center;
+}
+
+#game_grid dot
+{
+    background-color: rgb(229, 229, 229);
+    color:rgb(43, 43, 43);
+    text-align: center;
+    border-radius: 20px;
+    font-size: x-small;
+}
+
 
 /* #game_grid ::before,
 #game_grid ::after {
