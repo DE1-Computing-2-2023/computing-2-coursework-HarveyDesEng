@@ -30,11 +30,43 @@ DotsNBoxes.empty_board = function (width, height) {
 };
 
 /**
- * Function that creates an empty board of 6x7.
+ * Function that creates an empty board of 5x4.
  * @function
- * @returns {DotsNBoxes.Board} An empty 6x7 board.
+ * @returns {DotsNBoxes.Board} An empty 5x4 board.
  */
 DotsNBoxes.default_empty_board = function () {
+    const game_rows = 4;
+    const game_columns = 5;
+    document.documentElement.style.setProperty("--game-rows", game_rows);
+    document.documentElement.style.setProperty("--game-columns", game_columns);
+    const game_grid = document.getElementById("game_grid");
+
+    const make_item = function (tag, i1, i2) {
+        tag = document.createElement(`${tag}`);
+        tag.textContent = `${i1},${i2}`;
+        tag.onclick = function () {
+            console.log(`${i1},${i2}`);
+        };
+        game_grid.append(tag);
+    };
+
+    R.range(0, (game_rows)).forEach(function (row_index) {
+        R.range(0, (game_columns)).forEach(function (column_index) {
+            make_item("dot", column_index, row_index);
+            make_item("h_line", column_index, row_index);
+        });
+        make_item("dot", game_columns, row_index);
+        R.range(0, (game_columns)).forEach(function (column_index) {
+            make_item("v_line", column_index, row_index);
+            make_item("box", column_index, row_index);
+        });
+        make_item("v_line", game_columns, row_index);
+    });
+    R.range(0, (game_columns)).forEach(function (column_index) {
+        make_item("dot", column_index, game_rows);
+        make_item("h_line", column_index, game_rows);
+    });
+    make_item("dot", game_columns, game_rows);
 };
 
 /**
