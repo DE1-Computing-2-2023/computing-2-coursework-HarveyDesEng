@@ -1,84 +1,83 @@
 :root
 {   
-    --grid-gap: 10px;
-    --game-columns: 5;
-    --game-rows: 4;
-    --header-height: 80px;
-    --line-thickness: 10px;
+  --grid-gap: 10px;
+  --game-columns: 5;
+  --game-rows: 4;
+  --header-height: 80px;
+  --line-thickness: 10px;
 }
 
 body
 {
-    background-color: rgb(52, 52, 52);
-    color: white;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0;
+  background-color: rgb(52, 52, 52);
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 0;
 }
 
 Header
 {
-    background-color: rgb(35, 35, 35);
-    height: var(--header-height);
-    position: absolute;
-    width: 100%;
+  background-color: rgb(35, 35, 35);
+  height: var(--header-height);
+  position: absolute;
+  width: 100%;
 }
 
 h1
 {
-    text-align: center;
+  text-align: center;
 }
 
 main
 {
-    background-color: rgb(0, 0, 0);
-    display: grid;
-    height: calc(100% - var(--header-height));
-    position: absolute;
-    top: var(--header-height);
-    width: 100%
+  background-color: rgb(0, 0, 0);
+  display: grid;
+  height: calc(100% - var(--header-height));
+  position: absolute;
+  top: var(--header-height);
+  width: 100%
 }
 
 .grid_container {
-    grid-template-columns: repeat(var(--game-columns), 1fr 4fr);
-    grid-template-rows: repeat(var(--game-rows), 1fr 4fr);
-    gap: var(--grid-gap);
-    aspect-ratio: calc(var(--game-columns) / var(--game-rows));
-    margin: 10%;
-    margin-bottom: 10%;
-    max-width: 100%;
-    max-height: 100%;
-    display: grid;
-  }
+  grid-template-columns: repeat(var(--game-columns), 1fr 4fr) 1fr;
+  grid-template-rows: repeat(var(--game-rows), 1fr 4fr) 1fr;
+  aspect-ratio: calc(var(--game-columns) / var(--game-rows));
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+}
 
 #game_grid
 {
-    background-color: rgb(0, 0, 0);
+  margin: 10%;
+  margin-bottom: 10%;
+  background-color: rgb(49, 49, 49);
 }
 
 #game_grid h_line
 {
-    background-color: rgb(49, 49, 49);
-    color:rgb(171, 171, 171);
-    text-align: center;
+  background-color: rgb(49, 49, 49);
+  color:rgb(171, 171, 171);
+  text-align: center;
 }
 
 #game_grid v_line
 {
-    background-color: rgb(49, 49, 49);
-    color:rgb(171, 171, 171);
-    text-align: center;
+  background-color: rgb(49, 49, 49);
+  color:rgb(171, 171, 171);
+  text-align: center;
 }
 
 #game_grid box
 {
-    background-color: rgb(70, 85, 144);
-    color:rgb(43, 43, 43);
-    text-align: center;
+  background-color: rgb(70, 85, 144);
+  color:rgb(43, 43, 43);
+  text-align: center;
 }
 
 #game_grid dot
 {
-    background-color: rgb(229, 229, 229);
+    background-color: rgb(163, 163, 163);
     color:rgb(43, 43, 43);
     text-align: center;
     border-radius: 20px;
