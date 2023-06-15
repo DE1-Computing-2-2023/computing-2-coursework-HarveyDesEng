@@ -27,16 +27,8 @@ const DotsNBoxes = {};
  * user.
  */
 DotsNBoxes.empty_board = function (width, height) {
-};
-
-/**
- * Function that creates an empty board of 5x4.
- * @function
- * @returns {DotsNBoxes.Board} An empty 5x4 board.
- */
-DotsNBoxes.default_empty_board = function () {
-    const game_rows = 4;
-    const game_columns = 5;
+    const game_rows = height;
+    const game_columns = width;
     document.documentElement.style.setProperty("--game-rows", game_rows);
     document.documentElement.style.setProperty("--game-columns", game_columns);
     const game_grid = document.getElementById("game_grid");
@@ -67,6 +59,15 @@ DotsNBoxes.default_empty_board = function () {
         make_item("h_line", column_index, game_rows);
     });
     make_item("dot", game_columns, game_rows);
+};
+
+/**
+ * Function that creates an empty board of 5x4.
+ * @function
+ * @returns {DotsNBoxes.Board} An empty 5x4 board.
+ */
+DotsNBoxes.default_empty_board = function () {
+    DotsNBoxes.empty_board(5, 4);
 };
 
 /**
