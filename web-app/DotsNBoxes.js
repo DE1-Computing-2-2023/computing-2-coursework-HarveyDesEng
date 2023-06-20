@@ -18,68 +18,98 @@ const DotsNBoxes = {};
  * @memberof DotsNBoxes
  */
 
+
 /**
- * Function that creates a board of chosen widh and height.
+ * Function that creates a board of vertical lines of chosen widh and height.
  * @function
- * @param {DotsNBoxes.Width} width The width of the empty board.
- * @param {DotsNBoxes.Height} height The height of the empty board.
- * @returns {DotsNBoxes.Board} An empty board of width and height specified by
+ * @param {DotsNBoxes.v_width} width The width of the empty board.
+ * @param {DotsNBoxes.v_height} height The height of the empty board.
+ * @returns {DotsNBoxes.v_board} An empty board of width and height specified by
+ * user.
+ * @function
+ * @param {DotsNBoxes.h_width} width The width of the empty board.
+ * @param {DotsNBoxes.h_height} height The height of the empty board.
+ * @returns {DotsNBoxes.h_board} An empty board of width and height specified by
+ * user.
+ * @function
+ * @param {DotsNBoxes.b_width} width The width of the empty board.
+ * @param {DotsNBoxes.b_height} height The height of the empty board.
+ * @returns {DotsNBoxes.b_board} An empty board of width and height specified by
  * user.
  */
-DotsNBoxes.empty_board = function (width, height) {
-    const game_rows = height;
-    const game_columns = width;
-    document.documentElement.style.setProperty("--game-rows", game_rows);
-    document.documentElement.style.setProperty("--game-columns", game_columns);
-    const game_grid = document.getElementById("game_grid");
 
-    const make_item = function (tag, i1, i2) {
-        tag = document.createElement(`${tag}`);
-        tag.textContent = `${i1},${i2}`;
-        tag.onclick = function () {
-            console.log(`${i1},${i2}`);
-        };
-        game_grid.append(tag);
-    };
-
-    R.range(0, (game_rows)).forEach(function (row_index) {
-        R.range(0, (game_columns)).forEach(function (column_index) {
-            make_item("dot", column_index, row_index);
-            make_item("h_line", column_index, row_index);
-        });
-        make_item("dot", game_columns, row_index);
-        R.range(0, (game_columns)).forEach(function (column_index) {
-            make_item("v_line", column_index, row_index);
-            make_item("box", column_index, row_index);
-        });
-        make_item("v_line", game_columns, row_index);
-    });
-    R.range(0, (game_columns)).forEach(function (column_index) {
-        make_item("dot", column_index, game_rows);
-        make_item("h_line", column_index, game_rows);
-    });
-    make_item("dot", game_columns, game_rows);
+const range = function (a, b) {
+    Array.from(
+        {length: (b - a) + 1},
+        (value, index) => a + index
+    );
 };
 
-/**
- * Function that creates an empty board of 5x4.
- * @function
- * @returns {DotsNBoxes.Board} An empty 5x4 board.
- */
-DotsNBoxes.default_empty_board = function () {
-    DotsNBoxes.empty_board(5, 4);
+const empty_v_board = function (width=5, height=4) {
+    const board = range(0, height).map(function () {
+            range(0, width + 1).map(() => false);
+    });
+    return board;
+};
+
+const empty_h_board = function (width=5, height=4) {
+    R.range(0, height + 1).map(function () {
+        R.range(0, width).map(() => false);
+    });
+};
+
+const empty_b_board = function (width=5, height=4) {
+    R.range(0, height).map(function () {
+        R.range(0, width).map(() => false);
+    });
+};
+
+DotsNBoxes.starting_state = function () {
+    return {
+        "v_board": empty_v_board,
+        "h_board": empty_h_board,
+        "b_board": empty_b_board
+    }
+};
+
+const needs_flipping = function (row_index, column_index, row_grid, column_grid) {
+    row_grid === row_index && column_grid ===column_index;
+};
+
+const ply_on_board = function (column_index, row_index, board) {
+    return board.map((row, row_grid) => row.map((cell, column_grid) => (
+        needs_flipping(row_index, column_index, row_grid, column_grid)
+        ? !cell
+        : cell
+    )));
 };
 
 /**
  * Function that allows the player to make a ply.
  * @function
  * @param {DotsNBoxes.Player} player The player making a ply.
- * @param {DotsNBoxes.Line} line The line plyed.
- * @param {DotsNBoxes.Board} board The state of board before player makes move.
- * @returns {DotsNBoxes.Board} A new board with a line adjusted according to
- * the player's move.
+ * @param {DotsNBoxes.Line_type} line_type If the line is horizontal or
+ * verticle.
+ * @param {DotsNBoxes.Column_Index} column_index The x index of line.
+ * @param {DotsNBoxes.Row_Index} row_index The y axis of the line.
+ * @param {DotsNBoxes.Board_of_Horizontal_Lines} board_h_lines The board of
+  horizontal lines before a move is made.
+ * @param {DotsNBoxes.Board_of_Vertical_Lines} board_v_lines The board of
+ * vertical lines before a move is made.
+ * @returns {DotsNBoxes.Board_of_Horizontal_Lines} A new board with a line
+ * adjusted according to the player's move.
+ * @returns {DotsNBoxes.Board_of_Vertical_Lines} A new board with a line
+ * adjusted according to the player's move.
  */
-DotsNBoxes.ply = function (player, line, board) {
+
+DotsNBoxes.ply = function (line_type, column_index, row_index,
+    state) {
+        if (line_type === "h") {
+            ply_on_board(column_index, row_index, state.h_board);
+        }
+        if (line_type === "v") {
+            ply_on_board(column_index, row_index, state.v_board);
+        }
 };
 
 /**

@@ -5,12 +5,12 @@
   --line-thickness: 10px;
   --dot-colour: rgb(163, 163, 163);
   --line-colour: rgb(49, 49, 49);
-  --box-colour: rgb(78, 78, 78);
+  --lit-colour: rgb(88, 88, 88);
 }
 
 body
 {
-  background-color: rgb(52, 52, 52);
+  background-color: rgb(78, 78, 78);
   color: white;
   font-family: Helvetica, Arial, sans-serif;
   margin: 0;
@@ -39,86 +39,57 @@ main
   width: 100%
 }
 
-.grid_container {
+.grid_container 
+{
+  position: absolute;
+  place-self: center;
   grid-template-columns: repeat(var(--game-columns), 1fr 4fr) 1fr;
   grid-template-rows: repeat(var(--game-rows), 1fr 4fr) 1fr;
   aspect-ratio: calc(var(--game-columns) / var(--game-rows));
-  max-width: 100%;
   max-height: 100%;
+  max-width: 100%;
   display: grid;
-}
-
-#game_grid
-{
-  margin: 10%;
-  background-color: var(--line-colour);
 }
 
 #game_grid h_line
 {
-  color:rgb(171, 171, 171);
+  color:rgb(0, 255, 0);
   text-align: center;
+}
+
+#game_grid h_line:hover
+{
+  background-color: var(--line-colour);
 }
 
 #game_grid v_line
 {
-  color:rgb(171, 171, 171);
+  color:rgb(255, 0, 0);
   text-align: center;
+}
+
+#game_grid v_line:hover
+{
+  background-color: var(--line-colour);
 }
 
 #game_grid box
 {
   background-color: var(--box-colour);
-  color:rgb(43, 43, 43);
+  color:rgb(0, 0, 255);
   text-align: center;
 }
 
 #game_grid dot
 {
-    background-color: var(--dot-colour);
-    color:rgb(43, 43, 43);
-    text-align: center;
-    border-radius: 20px;
-    font-size: x-small;
+  background-color: var(--dot-colour);
+  color:rgb(0, 0, 0);
+  text-align: center;
+  clip-path: ellipse(closest-side farthest-side);
+  font-size: x-small;
 }
 
-
-/* #game_grid ::before,
-#game_grid ::after {
-    content: '';
-    position: absolute;
-    background-color: white;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  #game_grid::before {
-    left: 0px;
-  }
-  
-  #game_grid::after {
-    right: 0;
-  }
-  
-  .td.vertical-line {
-    width: 10px;
-    height: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgb(60, 255, 0);
-  }
-  
-  .td.horizontal-line {
-    width: 100%;
-    height: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgb(238, 0, 255);
-  }
-  
-  .td.box {
-    background-color: blue;
-  } */
+.lit
+{
+  background-color: var(--lit-colour);
+}

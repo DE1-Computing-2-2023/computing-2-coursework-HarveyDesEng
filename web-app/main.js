@@ -32,18 +32,6 @@ const update_h_board = function () {
     });
 };
 
-const update_box_board = function () {
-    game_state.b_board.forEach(function (row, row_index) {
-        row.forEach(function (cell, column_index) {
-            const table_box = table_boxes[row_index][column_index];
-            table_box.className = (
-                cell
-                ? "red"
-                : "unlit"
-            );
-        });
-    });
-};
 
 document.documentElement.style.setProperty("--game-rows", game_rows);
 document.documentElement.style.setProperty("--game-columns", game_columns);
@@ -60,7 +48,7 @@ const make_h_line = function (i1, i2) {
     const h_line = document.createElement("h_line");
     h_line.textContent = `${i1},${i2}`;
     h_line.onclick = function () {
-        game_state = DotsNBoxes.ply("h", i1, i2, game_state.h_board);
+        game_state = DotsNBoxes.ply("h", i1, i2, game_state);
         update_h_board();
     };
     game_grid.append(h_line);
@@ -71,7 +59,9 @@ const make_v_line = function (i1, i2) {
     const v_line = document.createElement("v_line");
     v_line.textContent = `${i1},${i2}`;
     v_line.onclick = function () {
-        game_state = DotsNBoxes.ply("v", i1, i2, game_state.v_board);
+        console.log(game_state.v_board);
+        console.log(game_state);
+        game_state = DotsNBoxes.ply("v", i1, i2, game_state);
         update_v_board();
     };
     game_grid.append(v_line);
