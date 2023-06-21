@@ -15,7 +15,7 @@ describe("Validity of empty boards", function () {
     Given that an empty board of vertical lines are made;
     At the begining of the game;
     Then the board is valid.`, function () {
-        const empty_v_board = DotsNBoxes.empty_v_board;
+        const empty_v_board = DotsNBoxes.starting_state().v_board;
         throw_if_invalid(empty_v_board);
     });
 

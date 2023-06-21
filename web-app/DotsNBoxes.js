@@ -20,21 +20,11 @@ const DotsNBoxes = {};
 
 
 /**
- * Function that creates a board of vertical lines of chosen widh and height.
+ * Function that creates boards of chosen widh and height.
  * @function
- * @param {DotsNBoxes.v_width} width The width of the empty board.
- * @param {DotsNBoxes.v_height} height The height of the empty board.
- * @returns {DotsNBoxes.v_board} An empty board of width and height specified by
- * user.
- * @function
- * @param {DotsNBoxes.h_width} width The width of the empty board.
- * @param {DotsNBoxes.h_height} height The height of the empty board.
- * @returns {DotsNBoxes.h_board} An empty board of width and height specified by
- * user.
- * @function
- * @param {DotsNBoxes.b_width} width The width of the empty board.
- * @param {DotsNBoxes.b_height} height The height of the empty board.
- * @returns {DotsNBoxes.b_board} An empty board of width and height specified by
+ * @param {DotsNBoxes.width} width The width of the empty board.
+ * @param {DotsNBoxes.height} height The height of the empty board.
+ * @returns {DotsNBoxes.board} An empty board of width and height specified by
  * user.
  */
 
@@ -51,7 +41,7 @@ DotsNBoxes.starting_state = function () {
         "v_board": empty_v_board,
         "h_board": empty_h_board,
         "b_board": empty_b_board
-    }
+    };
 };
 
 const needs_flipping = function (row_index, column_index, row_grid, column_grid) {
@@ -65,6 +55,7 @@ const ply_on_board = function (column_index, row_index, board) {
         : cell
     )));
 };
+
 
 /**
  * Function that allows the player to make a ply.
@@ -84,13 +75,12 @@ const ply_on_board = function (column_index, row_index, board) {
  * adjusted according to the player's move.
  */
 
-DotsNBoxes.ply = function (line_type, column_index, row_index,
-    state) {
-        if (line_type === "h") {
-            ply_on_board(column_index, row_index, state.h_board);
-        }
-        if (line_type === "v") {
-            ply_on_board(column_index, row_index, state.v_board);
+DotsNBoxes.ply = function (column_index, row_index,
+    board) {
+        return {
+            "v_board": ply_on_board(column_index, row_index, board),
+            "h_board": ply_on_board(column_index, row_index, board),
+            "b_board": empty_b_board
         }
 };
 
@@ -134,8 +124,7 @@ DotsNBoxes.is_winning_for_player = function (player, board) {
 * @param {string[]} thing_strings
 * @returns {function} The string representation.
 */
-DotsNBoxes.to_string = (board) =>
-    R.pipe(
+DotsNBoxes.to_string = (board) => R.pipe(
         R.transpose, // Columns to display vertically.
         R.reverse, // Empty slots at the top.
         R.map(R.join(" ")), // Add a space between each slot.
