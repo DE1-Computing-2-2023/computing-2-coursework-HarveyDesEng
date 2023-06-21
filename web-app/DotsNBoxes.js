@@ -38,31 +38,13 @@ const DotsNBoxes = {};
  * user.
  */
 
-const range = function (a, b) {
-    Array.from(
-        {length: (b - a) + 1},
-        (value, index) => a + index
-    );
+const empty_board = function (width, height) {
+    return R.repeat(R.repeat(0, width), height);
 };
 
-const empty_v_board = function (width=5, height=4) {
-    const board = range(0, height).map(function () {
-            range(0, width + 1).map(() => false);
-    });
-    return board;
-};
-
-const empty_h_board = function (width=5, height=4) {
-    R.range(0, height + 1).map(function () {
-        R.range(0, width).map(() => false);
-    });
-};
-
-const empty_b_board = function (width=5, height=4) {
-    R.range(0, height).map(function () {
-        R.range(0, width).map(() => false);
-    });
-};
+const empty_v_board = empty_board(6, 4);
+const empty_h_board = empty_board(5, 5);
+const empty_b_board = empty_board(5, 4);
 
 DotsNBoxes.starting_state = function () {
     return {
@@ -145,6 +127,20 @@ DotsNBoxes.is_game_tied = function (board) {
  */
 DotsNBoxes.is_winning_for_player = function (player, board) {
 };
+
+/**
+* Returns a  function, mapping tokens to provided string representations.
+* @function
+* @param {string[]} thing_strings
+* @returns {function} The string representation.
+*/
+DotsNBoxes.to_string = (board) =>
+    R.pipe(
+        R.transpose, // Columns to display vertically.
+        R.reverse, // Empty slots at the top.
+        R.map(R.join(" ")), // Add a space between each slot.
+        R.join("\n") // Stack rows atop each other.
+    )(board);
 
 export default Object.freeze(DotsNBoxes);
 

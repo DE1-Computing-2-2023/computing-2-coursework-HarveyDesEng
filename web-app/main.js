@@ -5,8 +5,24 @@ const game_rows = 4;
 const game_columns = 5;
 
 let game_state = DotsNBoxes.starting_state();
+console.log(`original game_state is: ${game_state}`);
+console.log(`Empty v board is: ${game_state.v_board}`)
+
+const table_h_lines = function () {
+    document.getElementsByTagName("h_line");
+};
+
+const table_v_lines = function () {
+    document.getElementsByTagName("v_line");
+};
+
+const table_boxes = function () {
+    document.getElementsByTagName("box");
+};
+
 
 const update_v_board = function () {
+    console.log(`game_state in function is: ${game_state}`);
     game_state.v_board.forEach(function (row, row_index) {
         row.forEach(function (cell, column_index) {
             const table_v_line = table_v_lines[row_index][column_index];
@@ -59,8 +75,6 @@ const make_v_line = function (i1, i2) {
     const v_line = document.createElement("v_line");
     v_line.textContent = `${i1},${i2}`;
     v_line.onclick = function () {
-        console.log(game_state.v_board);
-        console.log(game_state);
         game_state = DotsNBoxes.ply("v", i1, i2, game_state);
         update_v_board();
     };
@@ -86,16 +100,3 @@ R.range(0, (game_columns)).forEach(function (column_index) {
     make_h_line(column_index, game_rows);
 });
 make_item("dot", game_columns, game_rows);
-
-
-const table_h_lines = function () {
-    document.getElementsByTagName("h_line");
-};
-
-const table_v_lines = function () {
-    document.getElementsByTagName("v_line");
-};
-
-const table_boxes = function () {
-    document.getElementsByTagName("box");
-};
