@@ -83,7 +83,6 @@ main
 #game_grid dot
 {
   background-color: var(--dot-colour);
-  color:rgb(0, 0, 0);
   text-align: center;
   clip-path: ellipse(closest-side farthest-side);
   font-size: x-small;
