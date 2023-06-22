@@ -3,8 +3,11 @@
   --grid-gap: 10px;
   --header-height: 80px;
   --line-thickness: 10px;
+  --text-transparency: 1;
   --dot-colour: rgb(163, 163, 163);
   --line-colour: rgb(49, 49, 49);
+  --red-box: rgb(207, 87, 87);
+  --blue-box: rgb(87, 87, 207);
 }
 
 body
@@ -52,7 +55,7 @@ main
 
 #game_grid h_line
 {
-  color:rgb(0, 255, 0);
+  color:rgba(0, 255, 0, var(--text-transparency));
   text-align: center;
 }
 
@@ -63,7 +66,7 @@ main
 
 #game_grid v_line
 {
-  color:rgb(255, 0, 0);
+  color:rgba(255, 0, 0, var(--text-transparency));
   text-align: center;
 }
 
@@ -74,8 +77,7 @@ main
 
 #game_grid box
 {
-  background-color: var(--box-colour);
-  color:rgb(0, 0, 255);
+  color:rgba(0, 0, 255, var(--text-transparency));
   text-align: center;
 }
 
@@ -90,4 +92,9 @@ main
 .lit
 {
   background-color: var(--line-colour);
+}
+
+.red
+{
+  background-color: var(--red-box);
 }

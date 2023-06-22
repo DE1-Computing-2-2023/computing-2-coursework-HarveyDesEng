@@ -44,15 +44,14 @@ DotsNBoxes.starting_state = function () {
     };
 };
 
-/* const needs_lighting = function (row_index, column_index, row_grid, column_grid) {
-    row_grid === row_index && column_grid ===column_index;
+/* const needs_lighting = function (column_index, row_index, row_grid, column_grid) {
+    row_grid === column_index && column_grid ===row_index;
 };
  */
-const ply_on_board = function (column_index, row_index, board) {
-    console.log(board);
+const ply_on_board = function (row_index, column_index, board) {
     return (R.update(
-        column_index,
-        R.update(row_index, 1, board[column_index]),
+        row_index,
+        R.update(column_index, 1, board[row_index]),
         board
     ))
 };
@@ -64,8 +63,8 @@ const ply_on_board = function (column_index, row_index, board) {
  * @param {DotsNBoxes.Player} player The player making a ply.
  * @param {DotsNBoxes.Line_type} line_type If the line is horizontal or
  * verticle.
- * @param {DotsNBoxes.Column_Index} column_index The x index of line.
- * @param {DotsNBoxes.Row_Index} row_index The y axis of the line.
+ * @param {DotsNBoxes.row_index} row_index The x index of line.
+ * @param {DotsNBoxes.column_index} column_index The y axis of the line.
  * @param {DotsNBoxes.Board_of_Horizontal_Lines} board_h_lines The board of
   horizontal lines before a move is made.
  * @param {DotsNBoxes.Board_of_Vertical_Lines} board_v_lines The board of
@@ -73,21 +72,21 @@ const ply_on_board = function (column_index, row_index, board) {
  * @returns {DotsNBoxes.game_state} A collection of all boards.
  */
 
-DotsNBoxes.v_ply = function (column_index, row_index,
+DotsNBoxes.v_ply = function (row_index, column_index,
     game_state) {
     return {
-        "v_board": ply_on_board(column_index, row_index, game_state.v_board),
+        "v_board": ply_on_board(row_index, column_index, game_state.v_board),
         "h_board": game_state.h_board,
-        "b_board": game_state.b_board
+        "b_board": DotsNBoxes.update_box_array_after_v(row_index, column_index, game_state)
     }
 };
 
-DotsNBoxes.h_ply = function (column_index, row_index,
+DotsNBoxes.h_ply = function (row_index, column_index,
     game_state) {
     return {
         "v_board": game_state.v_board,
-        "h_board": ply_on_board(column_index, row_index, game_state.h_board),
-        "b_board": game_state.b_board
+        "h_board": ply_on_board(row_index, column_index, game_state.h_board),
+        "b_board": DotsNBoxes.update_box_array_after_h(row_index, column_index, game_state)
     };
 };
 /**
@@ -96,7 +95,97 @@ DotsNBoxes.h_ply = function (column_index, row_index,
  * @param {DotsNBoxes.Player} player The player making a ply.
  * @param {DotsNBoxes.Board} board The board after the player's move.
  */
-DotsNBoxes.is_box_made_by_player = function (player, board) {
+
+DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
+    if (
+        //both boxes around vertical line
+        (state.v_board[r_i][c_i+1] === 1)
+        && (state.h_board[r_i][c_i] === 1)
+        && (state.h_board[r_i+1][c_i] === 1)
+        && (state.v_board[r_i][c_i-1] === 1)
+        && (state.h_board[r_i][c_i-1] === 1)
+        && (state.h_board[r_i+1][c_i-1] === 1)
+    ) {
+        console.log(`${r_i},${c_i} should be red`);
+        const intermediate_board = ply_on_board(r_i, c_i, state.b_board);
+        console.log(`${r_i},${c_i-1} should be red`)
+        return ply_on_board(r_i, c_i-1, intermediate_board);
+    }
+    if (
+        // box to the right of vertical line
+        (state.v_board[r_i][c_i+1] === 1)
+        && (state.h_board[r_i][c_i] === 1)
+        && (state.h_board[r_i+1][c_i] === 1)
+    ) {
+        console.log(`${r_i},${c_i} should be red`);
+        return ply_on_board(r_i, c_i, state.b_board);
+    }
+    if (
+        // box to the left of vertical line
+        (state.v_board[r_i][c_i-1] === 1)
+        && (state.h_board[r_i][c_i-1] === 1)
+        && (state.h_board[r_i+1][c_i-1] === 1)
+    ) {
+        console.log(`${r_i},${c_i-1} should be red`)
+        return ply_on_board(r_i, c_i-1, state.b_board);
+    } else {
+        return state.b_board;
+    }
+};
+
+DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
+    if (r_i === 0) {
+        if (
+            // box below horizonal line
+            (state.h_board[r_i+1][c_i] === 1)
+            && (state.v_board[r_i][c_i] === 1)
+            && (state.v_board[r_i][c_i+1] === 1)
+        ) {
+            console.log(`${r_i},${c_i} should be red`)
+            return ply_on_board(r_i, c_i, state.b_board);
+        } else {
+            return state.b_board;
+        }
+    } else {
+        if (
+            //both boxes around horizontal line
+            (state.h_board[r_i-1][c_i] === 1)
+            && (state.v_board[r_i-1][c_i] === 1)
+            && (state.v_board[r_i-1][c_i+1] === 1)
+            && (state.h_board[r_i+1][c_i] === 1)
+            && (state.v_board[r_i][c_i] === 1)
+            && (state.v_board[r_i][c_i+1] === 1)
+        ) {
+            console.log(`${r_i-1},${c_i} should be red`)
+            const intermediate_board = ply_on_board(r_i-1, c_i, state.b_board);
+            console.log(`${r_i},${c_i} should be red`)
+            return ply_on_board(r_i, c_i, intermediate_board);
+        }
+        if (
+            // box above horizontal line
+            (state.h_board[r_i-1][c_i] === 1)
+            && (state.v_board[r_i-1][c_i] === 1)
+            && (state.v_board[r_i-1][c_i+1] === 1)
+        ) {
+            console.log(`${r_i-1},${c_i} should be red`)
+            return ply_on_board(r_i-1, c_i, state.b_board);
+        }
+    }
+    if (r_i === 4) {
+        return state.b_board;
+    } else {
+        if (
+            // box below horizonal line
+            (state.h_board[r_i+1][c_i] === 1)
+            && (state.v_board[r_i][c_i] === 1)
+            && (state.v_board[r_i][c_i+1] === 1)
+        ) {
+            console.log(`${r_i},${c_i} should be red`)
+            return ply_on_board(r_i, c_i, state.b_board);
+        } else {
+            return state.b_board;
+        }
+    }
 };
 
 /**
