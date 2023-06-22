@@ -44,16 +44,17 @@ DotsNBoxes.starting_state = function () {
     };
 };
 
-const needs_flipping = function (row_index, column_index, row_grid, column_grid) {
+/* const needs_lighting = function (row_index, column_index, row_grid, column_grid) {
     row_grid === row_index && column_grid ===column_index;
 };
-
+ */
 const ply_on_board = function (column_index, row_index, board) {
-    return board.map((row, row_grid) => row.map((cell, column_grid) => (
-        needs_flipping(row_index, column_index, row_grid, column_grid)
-        ? !cell
-        : cell
-    )));
+    console.log(board);
+    return (R.update(
+        column_index,
+        R.update(row_index, 1, board[column_index]),
+        board
+    ))
 };
 
 
@@ -69,21 +70,26 @@ const ply_on_board = function (column_index, row_index, board) {
   horizontal lines before a move is made.
  * @param {DotsNBoxes.Board_of_Vertical_Lines} board_v_lines The board of
  * vertical lines before a move is made.
- * @returns {DotsNBoxes.Board_of_Horizontal_Lines} A new board with a line
- * adjusted according to the player's move.
- * @returns {DotsNBoxes.Board_of_Vertical_Lines} A new board with a line
- * adjusted according to the player's move.
+ * @returns {DotsNBoxes.game_state} A collection of all boards.
  */
 
-DotsNBoxes.ply = function (column_index, row_index,
-    board) {
-        return {
-            "v_board": ply_on_board(column_index, row_index, board),
-            "h_board": ply_on_board(column_index, row_index, board),
-            "b_board": empty_b_board
-        }
+DotsNBoxes.v_ply = function (column_index, row_index,
+    game_state) {
+    return {
+        "v_board": ply_on_board(column_index, row_index, game_state.v_board),
+        "h_board": game_state.h_board,
+        "b_board": game_state.b_board
+    }
 };
 
+DotsNBoxes.h_ply = function (column_index, row_index,
+    game_state) {
+    return {
+        "v_board": game_state.v_board,
+        "h_board": ply_on_board(column_index, row_index, game_state.h_board),
+        "b_board": game_state.b_board
+    };
+};
 /**
  * Function that determines whether a box is made by the player after their ply.
  * @function

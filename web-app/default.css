@@ -5,7 +5,6 @@
   --line-thickness: 10px;
   --dot-colour: rgb(163, 163, 163);
   --line-colour: rgb(49, 49, 49);
-  --lit-colour: rgb(88, 88, 88);
 }
 
 body
@@ -90,5 +89,5 @@ main
 
 .lit
 {
-  background-color: var(--lit-colour);
+  background-color: var(--line-colour);
 }
