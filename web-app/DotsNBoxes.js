@@ -40,7 +40,8 @@ DotsNBoxes.starting_state = function () {
     return {
         "v_board": empty_v_board,
         "h_board": empty_h_board,
-        "b_board": empty_b_board
+        "b_board": empty_b_board,
+        "moves_made": 0
     };
 };
 
@@ -77,7 +78,8 @@ DotsNBoxes.v_ply = function (row_index, column_index,
     return {
         "v_board": ply_on_board(row_index, column_index, game_state.v_board),
         "h_board": game_state.h_board,
-        "b_board": DotsNBoxes.update_box_array_after_v(row_index, column_index, game_state)
+        "b_board": DotsNBoxes.update_box_array_after_v(row_index, column_index, game_state),
+        "moves_made": game_state.moves_made + 1
     }
 };
 
@@ -86,7 +88,8 @@ DotsNBoxes.h_ply = function (row_index, column_index,
     return {
         "v_board": game_state.v_board,
         "h_board": ply_on_board(row_index, column_index, game_state.h_board),
-        "b_board": DotsNBoxes.update_box_array_after_h(row_index, column_index, game_state)
+        "b_board": DotsNBoxes.update_box_array_after_h(row_index, column_index, game_state),
+        "moves_made": game_state.moves_made + 1
     };
 };
 /**
@@ -146,21 +149,8 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         } else {
             return state.b_board;
         }
-    } else {
-        if (
-            //both boxes around horizontal line
-            (state.h_board[r_i-1][c_i] === 1)
-            && (state.v_board[r_i-1][c_i] === 1)
-            && (state.v_board[r_i-1][c_i+1] === 1)
-            && (state.h_board[r_i+1][c_i] === 1)
-            && (state.v_board[r_i][c_i] === 1)
-            && (state.v_board[r_i][c_i+1] === 1)
-        ) {
-            console.log(`${r_i-1},${c_i} should be red`)
-            const intermediate_board = ply_on_board(r_i-1, c_i, state.b_board);
-            console.log(`${r_i},${c_i} should be red`)
-            return ply_on_board(r_i, c_i, intermediate_board);
-        }
+    }
+    if (r_i === 4) {
         if (
             // box above horizontal line
             (state.h_board[r_i-1][c_i] === 1)
@@ -169,22 +159,43 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         ) {
             console.log(`${r_i-1},${c_i} should be red`)
             return ply_on_board(r_i-1, c_i, state.b_board);
-        }
-    }
-    if (r_i === 4) {
-        return state.b_board;
-    } else {
-        if (
-            // box below horizonal line
-            (state.h_board[r_i+1][c_i] === 1)
-            && (state.v_board[r_i][c_i] === 1)
-            && (state.v_board[r_i][c_i+1] === 1)
-        ) {
-            console.log(`${r_i},${c_i} should be red`)
-            return ply_on_board(r_i, c_i, state.b_board);
         } else {
             return state.b_board;
         }
+    }
+    if (
+        //both boxes around horizontal line
+        (state.h_board[r_i-1][c_i] === 1)
+        && (state.v_board[r_i-1][c_i] === 1)
+        && (state.v_board[r_i-1][c_i+1] === 1)
+        && (state.h_board[r_i+1][c_i] === 1)
+        && (state.v_board[r_i][c_i] === 1)
+        && (state.v_board[r_i][c_i+1] === 1)
+    ) {
+        console.log(`${r_i-1},${c_i} should be red`)
+        const intermediate_board = ply_on_board(r_i-1, c_i, state.b_board);
+        console.log(`${r_i},${c_i} should be red`)
+        return ply_on_board(r_i, c_i, intermediate_board);
+    }
+    if (
+        // box above horizontal line
+        (state.h_board[r_i-1][c_i] === 1)
+        && (state.v_board[r_i-1][c_i] === 1)
+        && (state.v_board[r_i-1][c_i+1] === 1)
+    ) {
+        console.log(`${r_i-1},${c_i} should be red`)
+        return ply_on_board(r_i-1, c_i, state.b_board);
+    }
+    if (
+        // box below horizonal line
+        (state.h_board[r_i+1][c_i] === 1)
+        && (state.v_board[r_i][c_i] === 1)
+        && (state.v_board[r_i][c_i+1] === 1)
+    ) {
+        console.log(`${r_i},${c_i} should be red`)
+        return ply_on_board(r_i, c_i, state.b_board);
+    } else {
+        return state.b_board;
     }
 };
 

@@ -17,6 +17,7 @@ const make_v_line = function (r_i, c_i) {
     v_line.onclick = function () {
         console.log(`v_line: ${r_i},${c_i}`);
         game_state = DotsNBoxes.v_ply(r_i, c_i, game_state);
+        console.log(game_state.moves_made);
         update_v_board();
         update_b_board();
     };
@@ -30,6 +31,7 @@ const make_h_line = function (r_i, c_i) {
     h_line.onclick = function () {
         console.log(`h_line: ${r_i},${c_i}`);
         game_state = DotsNBoxes.h_ply(r_i, c_i, game_state);
+        console.log(game_state.moves_made);
         update_h_board();
         update_b_board();
     };
