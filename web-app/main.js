@@ -17,9 +17,10 @@ const make_v_line = function (r_i, c_i) {
     v_line.onclick = function () {
         console.log(`v_line: ${r_i},${c_i}`);
         game_state = DotsNBoxes.v_ply(r_i, c_i, game_state);
-        console.log(game_state.moves_made);
+        console.log(`moves_made: ${game_state.moves_made}`);
         update_v_board();
         update_b_board();
+        console.log(`is_full: ${DotsNBoxes.is_full(game_state)}`);
     };
     game_grid.append(v_line);
     return v_line;
@@ -31,9 +32,10 @@ const make_h_line = function (r_i, c_i) {
     h_line.onclick = function () {
         console.log(`h_line: ${r_i},${c_i}`);
         game_state = DotsNBoxes.h_ply(r_i, c_i, game_state);
-        console.log(game_state.moves_made);
+        console.log(`moves_made: ${game_state.moves_made}`);
         update_h_board();
         update_b_board();
+        console.log(`is_full: ${DotsNBoxes.is_full(game_state)}`);
     };
     game_grid.append(h_line);
     return h_line;
@@ -112,11 +114,14 @@ const update_b_board = function () {
     game_state.b_board.forEach(function (row, row_index) {
         row.forEach(function (cell, column_index) {
             const table_box = table_boxes[(row_index) * (game_columns) + column_index];
-            table_box.className = (
-                (cell === 1)
-                ? "red"
-                : "unlit"
-            );
+            if (cell === 1) {
+                return table_box.className = "red";
+            }
+            if (cell === 2) {
+                return table_box.className = "blue";
+            } else {
+                return table_box.className = "unlit";
+            }
         });
     });
 };

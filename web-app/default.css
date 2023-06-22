@@ -3,7 +3,7 @@
   --grid-gap: 10px;
   --header-height: 80px;
   --line-thickness: 10px;
-  --text-transparency: 1;
+  --text-transparency: 0;
   --dot-colour: rgb(163, 163, 163);
   --line-colour: rgb(49, 49, 49);
   --red-box: rgb(207, 87, 87);
@@ -97,4 +97,9 @@ main
 .red
 {
   background-color: var(--red-box);
+}
+
+.blue
+{
+  background-color: var(--blue-box);
 }
