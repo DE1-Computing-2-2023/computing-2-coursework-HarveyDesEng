@@ -1,6 +1,15 @@
 import DotsNBoxes from "./DotsNBoxes.js";
 import R from "./ramda.js";
 
+const result_text = [
+    "Draw!",
+    "Red wins!",
+    "Blue wins!"
+];
+
+const result_dialog = document.getElementById("result_dialog");
+const game_result = document.getElementById("game_result");
+
 const game_rows = 4;
 const game_columns = 5;
 
@@ -20,7 +29,12 @@ const make_v_line = function (r_i, c_i) {
         console.log(`moves_made: ${game_state.moves_made}`);
         update_v_board();
         update_b_board();
-        console.log(`is_full: ${DotsNBoxes.is_full(game_state)}`);
+        if (DotsNBoxes.player_has_won(game_state) !== -1) {
+            game_result.innerHTML = result_text[
+                DotsNBoxes.player_has_won(game_state)
+            ];
+            result_dialog.showModal();
+        }
     };
     game_grid.append(v_line);
     return v_line;
@@ -35,7 +49,12 @@ const make_h_line = function (r_i, c_i) {
         console.log(`moves_made: ${game_state.moves_made}`);
         update_h_board();
         update_b_board();
-        console.log(`is_full: ${DotsNBoxes.is_full(game_state)}`);
+        if (DotsNBoxes.player_has_won(game_state) !== -1) {
+            game_result.innerHTML = result_text[
+                DotsNBoxes.player_has_won(game_state)
+            ];
+            result_dialog.showModal();
+        }
     };
     game_grid.append(h_line);
     return h_line;

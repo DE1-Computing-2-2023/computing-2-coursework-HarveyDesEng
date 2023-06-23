@@ -158,7 +158,7 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
     ) {
         const intermediate_board = ply_box_on_board(player_to_ply(state), r_i,
         c_i, state.b_board, state);
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i, c_i-1,
         intermediate_board, state);
     }
@@ -168,7 +168,7 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
         && (state.h_board[r_i][c_i] === 1)
         && (state.h_board[r_i+1][c_i] === 1)
     ) {
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i, c_i, state.b_board,
         state);
     }
@@ -178,9 +178,9 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
         && (state.h_board[r_i][c_i-1] === 1)
         && (state.h_board[r_i+1][c_i-1] === 1)
     ) {
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i, c_i-1, state.b_board,
-         state);
+        state);
     } else {
         add_moves = 1;
         return state.b_board;
@@ -195,7 +195,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
             && (state.v_board[r_i][c_i] === 1)
             && (state.v_board[r_i][c_i+1] === 1)
         ) {
-            add_moves = 2;
+            add_moves = 0;
             return ply_box_on_board(player_to_ply(state), r_i, c_i,
             state.b_board, state);
         } else {
@@ -210,7 +210,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
             && (state.v_board[r_i-1][c_i] === 1)
             && (state.v_board[r_i-1][c_i+1] === 1)
         ) {
-            add_moves = 2;;
+            add_moves = 0;;
             return ply_box_on_board(player_to_ply(state), r_i-1, c_i,
             state.b_board, state);
         } else {
@@ -229,7 +229,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
     ) {
         const intermediate_board = ply_box_on_board(player_to_ply(state), r_i-1,
         c_i, state.b_board, state);
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i, c_i,
         intermediate_board, state);
     }
@@ -239,7 +239,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         && (state.v_board[r_i-1][c_i] === 1)
         && (state.v_board[r_i-1][c_i+1] === 1)
     ) {
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i-1, c_i,
         state.b_board, state);
     }
@@ -249,7 +249,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         && (state.v_board[r_i][c_i] === 1)
         && (state.v_board[r_i][c_i+1] === 1)
     ) {
-        add_moves = 2;
+        add_moves = 0;
         return ply_box_on_board(player_to_ply(state), r_i, c_i, state.b_board,
         state);
     } else {
@@ -296,16 +296,35 @@ DotsNBoxes.to_string = (board) => R.pipe(
     R.join("\n") // Stack rows atop each other.
 )(board);
 
-DotsNBoxes.is_full = function (state) {
+DotsNBoxes.player_has_won = function (state) {
     if (
         R.count(R.equals(1), R.flatten(state.v_board)) === (width+1)*(height)
         && R.count(R.equals(1), R.flatten(state.h_board)) === (width)*(height+1)
     ) {
-        return true;
+        if (
+            R.count(R.equals(1), R.flatten(state.b_board))
+            === R.count(R.equals(2), R.flatten(state.b_board))
+        ) {
+            console.log("Game is tied");
+            return 0;
+        }
+        if (
+            R.count(R.equals(1), R.flatten(state.b_board)) 
+            > R.count(R.equals(2), R.flatten(state.b_board))
+        ) {
+            console.log("Red has won");
+            return 1;
+        }
+        if (
+            R.count(R.equals(1), R.flatten(state.b_board)) 
+            < R.count(R.equals(2), R.flatten(state.b_board))
+        ) {
+            console.log("Blue has won");
+            return 2;
+        }
     } else {
-        return false;
+        return -1;
     }
 };
-
 
 export default Object.freeze(DotsNBoxes);
