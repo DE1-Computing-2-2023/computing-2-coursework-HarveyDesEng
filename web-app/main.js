@@ -4,8 +4,8 @@ import R from "./ramda.js";
 // Array of result texts.
 const result_text = [
     "Draw!",
-    "Red wins!",
-    "Blue wins!"
+    "Blue wins!",
+    "Red wins!"
 ];
 
 const result_dialog = document.getElementById("result_dialog");
@@ -34,6 +34,7 @@ const make_v_line = function (r_i, c_i) {
         console.log(`moves_made: ${game_state.moves_made}`);
         update_v_board();
         update_b_board();
+        update_dot_colour();
         if (DotsNBoxes.player_has_won(game_state) !== -1) {
             game_result.innerHTML = result_text[
                 DotsNBoxes.player_has_won(game_state)
@@ -55,6 +56,7 @@ const make_h_line = function (r_i, c_i) {
         console.log(`moves_made: ${game_state.moves_made}`);
         update_h_board();
         update_b_board();
+        update_dot_colour();
         if (DotsNBoxes.player_has_won(game_state) !== -1) {
             game_result.innerHTML = result_text[
                 DotsNBoxes.player_has_won(game_state)
@@ -76,6 +78,7 @@ const make_box = function (r_i, c_i) {
 // Function that make a dot element.
 const make_dot = function () {
     const dot = document.createElement(`dot`);
+    dot.id = "dot";
     game_grid.append(dot);
 };
 
@@ -155,13 +158,31 @@ const update_b_board = function () {
                 table_boxes[(row_index) * (game_columns) + column_index]
             );
             if (cell === 1) {
-                return table_box.className = "red";
+                return table_box.className = "blue";
             }
             if (cell === 2) {
-                return table_box.className = "blue";
+                return table_box.className = "red";
             } else {
                 return table_box.className = "unlit";
             }
+        });
+    });
+};
+
+// Function that changes colour of the selected lines depending on the player's
+// turn.
+const update_dot_colour = function () {
+    const lines = table_h_lines.concat(table_v_lines);
+    lines.forEach(function (line) {
+        line.addEventListener("mouseover", function handleMouseOVer() {
+            line.style.backgroundColor = (
+                (DotsNBoxes.player_to_ply(game_state) === 1)
+                ? "#2a2a66"
+                : "#662a2a"
+            );
+        });
+        line.addEventListener("mouseout", function handleMouseOut() {
+            line.style.backgroundColor = "";
         });
     });
 };

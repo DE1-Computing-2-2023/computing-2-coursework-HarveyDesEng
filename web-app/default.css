@@ -1,7 +1,7 @@
 :root
 {   
   --grid-gap: 10px;
-  --header-height: 80px;
+  --header-height: 10%;
   --header-colour: rgb(35, 35, 35);
   --line-thickness: 10px;
   --text-transparency: 0;
@@ -62,7 +62,7 @@ main
 
 #game_grid h_line:hover
 {
-  background-color: var(--line-colour);
+  background-color: #662a2a;
 }
 
 #game_grid v_line
@@ -73,7 +73,7 @@ main
 
 #game_grid v_line:hover
 {
-  background-color: var(--line-colour);
+  background-color: #662a2a;
 }
 
 #game_grid box
@@ -107,23 +107,23 @@ main
 
 #result_dialog
 {
-    background: none;
-    border: none;
-    height: 100%;
-    position: absolute;
-    text-align: center;
-    width: 100%;
+  background: none;
+  border: none;
+  height: 100%;
+  position: absolute;
+  text-align: center;
+  width: 100%;
 }
 
 #result_dialog::backdrop
 {
-    backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
 }
 
 #result_dialog h2
 {
-    font-size: 100pt;
-    color: rgb(255, 255, 255);
-    margin: 0;
-    margin-top: calc(2 * var(--header-height));
+  font-size: 100pt;
+  color: rgb(255, 255, 255);
+  margin: 0;
+  margin-top: calc(2 * var(--header-height));
 }

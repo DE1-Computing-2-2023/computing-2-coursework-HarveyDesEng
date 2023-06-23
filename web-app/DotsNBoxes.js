@@ -23,8 +23,8 @@ const empty_board = function (width, height) {
 const width = 5;
 const height = 4;
 
-const empty_v_board = empty_board(width+1, height);
-const empty_h_board = empty_board(width, height+1);
+const empty_v_board = empty_board(width + 1, height);
+const empty_h_board = empty_board(width, height + 1);
 const empty_b_board = empty_board(width, height);
 
 
@@ -54,8 +54,7 @@ let add_moves = 1;
  * @param {DotsNBoxes.column_index} column_index The y axis of the line.
  * @returns {DotsNBoxes.game_state} A collection of all boards and moves made.
  */
-DotsNBoxes.v_ply = function (row_index, column_index,
-    game_state) {
+DotsNBoxes.v_ply = function (row_index, column_index, game_state) {
     if (game_state.v_board[row_index][column_index] === 1) {
         return {
             "v_board": game_state.v_board,
@@ -90,7 +89,7 @@ DotsNBoxes.h_ply = function (row_index, column_index,
             "h_board": game_state.h_board,
             "b_board": game_state.b_board,
             "moves_made": game_state.moves_made
-        }
+        };
     } else {
         return {
             "v_board": game_state.v_board,
@@ -103,7 +102,13 @@ DotsNBoxes.h_ply = function (row_index, column_index,
     }
 };
 
-const player_to_ply = function (state) {
+/**
+ * Function that determines the player's turn.
+ * @function
+ * @param {DotsNBoxes.Board} state A collection of all boards and moves made.
+ * @returns {Number} The number reperesenting the player to play next..
+ */
+DotsNBoxes.player_to_ply = function (state) {
     const moves_made = state.moves_made;
     if (moves_made % 2 === 1) {
         return 1;
@@ -123,7 +128,7 @@ const ply_line_on_board = function (row_index, column_index, board) {
         row_index,
         R.update(column_index, 1, board[row_index]),
         board
-    ))
+    ));
 };
 
 
@@ -132,7 +137,7 @@ const ply_box_on_board = function (player, row_index, column_index, board) {
         row_index,
         R.update(column_index, player, board[row_index]),
         board
-    ))
+    ));
 };
 
 /**
@@ -153,10 +158,10 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
         && (state.h_board[r_i][c_i-1] === 1)
         && (state.h_board[r_i+1][c_i-1] === 1)
     ) {
-        const intermediate_board = ply_box_on_board(player_to_ply(state), r_i,
+        const intermediate_board = ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i,
         c_i, state.b_board);
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i, c_i-1,
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i-1,
         intermediate_board);
     }
     if (
@@ -166,7 +171,7 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
         && (state.h_board[r_i+1][c_i] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i, c_i, state.b_board);
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i, state.b_board);
     }
     if (
         // box to the left of vertical line
@@ -175,7 +180,8 @@ DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
         && (state.h_board[r_i+1][c_i-1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i, c_i-1, state.b_board);
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i-1,
+        state.b_board);
     } else {
         add_moves = 1;
         return state.b_board;
@@ -199,7 +205,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
             && (state.v_board[r_i][c_i+1] === 1)
         ) {
             add_moves = 0;
-            return ply_box_on_board(player_to_ply(state), r_i, c_i,
+            return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i,
             state.b_board);
         } else {
             add_moves = 1;
@@ -213,8 +219,8 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
             && (state.v_board[r_i-1][c_i] === 1)
             && (state.v_board[r_i-1][c_i+1] === 1)
         ) {
-            add_moves = 0;;
-            return ply_box_on_board(player_to_ply(state), r_i-1, c_i,
+            add_moves = 0;
+            return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1, c_i,
             state.b_board);
         } else {
             add_moves = 1;
@@ -230,10 +236,10 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         && (state.v_board[r_i][c_i] === 1)
         && (state.v_board[r_i][c_i+1] === 1)
     ) {
-        const intermediate_board = ply_box_on_board(player_to_ply(state), r_i-1,
+        const intermediate_board = ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1,
         c_i, state.b_board);
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i, c_i,
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i,
         intermediate_board);
     }
     if (
@@ -243,7 +249,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         && (state.v_board[r_i-1][c_i+1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i-1, c_i,
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1, c_i,
         state.b_board);
     }
     if (
@@ -253,7 +259,7 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
         && (state.v_board[r_i][c_i+1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(player_to_ply(state), r_i, c_i, state.b_board);
+        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i, state.b_board);
     } else {
         add_moves = 1;
         return state.b_board;
@@ -293,14 +299,14 @@ DotsNBoxes.player_has_won = function (state) {
             return 0;
         }
         if (
-            R.count(R.equals(1), R.flatten(state.b_board)) 
+            R.count(R.equals(1), R.flatten(state.b_board))
             > R.count(R.equals(2), R.flatten(state.b_board))
         ) {
             console.log("Red has won");
             return 1;
         }
         if (
-            R.count(R.equals(1), R.flatten(state.b_board)) 
+            R.count(R.equals(1), R.flatten(state.b_board))
             < R.count(R.equals(2), R.flatten(state.b_board))
         ) {
             console.log("Blue has won");
