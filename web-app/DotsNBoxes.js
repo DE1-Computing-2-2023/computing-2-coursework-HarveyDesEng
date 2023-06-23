@@ -64,11 +64,17 @@ DotsNBoxes.v_ply = function (row_index, column_index, game_state) {
         };
     } else {
         return {
-            "v_board": ply_line_on_board(row_index, column_index,
-                game_state.v_board),
+            "v_board": ply_line_on_board(
+                row_index,
+                column_index,
+                game_state.v_board
+            ),
             "h_board": game_state.h_board,
-            "b_board": DotsNBoxes.update_box_array_after_v(row_index,
-                column_index, game_state),
+            "b_board": DotsNBoxes.update_box_array_after_v(
+                row_index,
+                column_index,
+                game_state
+            ),
             "moves_made": game_state.moves_made + add_moves
         };
     }
@@ -81,8 +87,7 @@ DotsNBoxes.v_ply = function (row_index, column_index, game_state) {
  * @param {DotsNBoxes.column_index} column_index The y axis of the line.
  * @returns {DotsNBoxes.game_state} A collection of all boards and moves made.
  */
-DotsNBoxes.h_ply = function (row_index, column_index,
-    game_state) {
+DotsNBoxes.h_ply = function (row_index, column_index, game_state) {
     if (game_state.h_board[row_index][column_index] === 1) {
         return {
             "v_board": game_state.v_board,
@@ -93,10 +98,16 @@ DotsNBoxes.h_ply = function (row_index, column_index,
     } else {
         return {
             "v_board": game_state.v_board,
-            "h_board": ply_line_on_board(row_index, column_index,
-                game_state.h_board),
-            "b_board": DotsNBoxes.update_box_array_after_h(row_index,
-                column_index, game_state),
+            "h_board": ply_line_on_board(
+                row_index,
+                column_index,
+                game_state.h_board
+            ),
+            "b_board": DotsNBoxes.update_box_array_after_h(
+                row_index,
+                column_index,
+                game_state
+            ),
             "moves_made": game_state.moves_made + add_moves
         };
     }
@@ -151,37 +162,54 @@ const ply_box_on_board = function (player, row_index, column_index, board) {
 DotsNBoxes.update_box_array_after_v = function (r_i, c_i, state) {
     if (
         //both boxes around vertical line
-        (state.v_board[r_i][c_i+1] === 1)
+        (state.v_board[r_i][c_i + 1] === 1)
         && (state.h_board[r_i][c_i] === 1)
-        && (state.h_board[r_i+1][c_i] === 1)
-        && (state.v_board[r_i][c_i-1] === 1)
-        && (state.h_board[r_i][c_i-1] === 1)
-        && (state.h_board[r_i+1][c_i-1] === 1)
+        && (state.h_board[r_i + 1][c_i] === 1)
+        && (state.v_board[r_i][c_i - 1] === 1)
+        && (state.h_board[r_i][c_i - 1] === 1)
+        && (state.h_board[r_i + 1][c_i - 1] === 1)
     ) {
-        const intermediate_board = ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i,
-        c_i, state.b_board);
+        const intermediate_board = ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            c_i,
+            state.b_board
+        );
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i-1,
-        intermediate_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            (c_i - 1),
+            intermediate_board
+        );
     }
     if (
         // box to the right of vertical line
-        (state.v_board[r_i][c_i+1] === 1)
+        (state.v_board[r_i][c_i + 1] === 1)
         && (state.h_board[r_i][c_i] === 1)
-        && (state.h_board[r_i+1][c_i] === 1)
+        && (state.h_board[r_i + 1][c_i] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i, state.b_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            c_i,
+            state.b_board
+        );
     }
     if (
         // box to the left of vertical line
-        (state.v_board[r_i][c_i-1] === 1)
-        && (state.h_board[r_i][c_i-1] === 1)
-        && (state.h_board[r_i+1][c_i-1] === 1)
+        (state.v_board[r_i][c_i - 1] === 1)
+        && (state.h_board[r_i][c_i - 1] === 1)
+        && (state.h_board[r_i + 1][c_i - 1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i-1,
-        state.b_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            (c_i - 1),
+            state.b_board
+        );
     } else {
         add_moves = 1;
         return state.b_board;
@@ -200,13 +228,17 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
     if (r_i === 0) {
         if (
             // box below horizonal line
-            (state.h_board[r_i+1][c_i] === 1)
+            (state.h_board[r_i + 1][c_i] === 1)
             && (state.v_board[r_i][c_i] === 1)
-            && (state.v_board[r_i][c_i+1] === 1)
+            && (state.v_board[r_i][c_i + 1] === 1)
         ) {
             add_moves = 0;
-            return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i,
-            state.b_board);
+            return ply_box_on_board(
+                DotsNBoxes.player_to_ply(state),
+                r_i,
+                c_i,
+                state.b_board
+            );
         } else {
             add_moves = 1;
             return state.b_board;
@@ -215,13 +247,17 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
     if (r_i === height) {
         if (
             // box above horizontal line
-            (state.h_board[r_i-1][c_i] === 1)
-            && (state.v_board[r_i-1][c_i] === 1)
-            && (state.v_board[r_i-1][c_i+1] === 1)
+            (state.h_board[r_i - 1][c_i] === 1)
+            && (state.v_board[r_i - 1][c_i] === 1)
+            && (state.v_board[r_i - 1][c_i + 1] === 1)
         ) {
             add_moves = 0;
-            return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1, c_i,
-            state.b_board);
+            return ply_box_on_board(
+                DotsNBoxes.player_to_ply(state),
+                (r_i - 1),
+                c_i,
+                state.b_board
+            );
         } else {
             add_moves = 1;
             return state.b_board;
@@ -229,37 +265,54 @@ DotsNBoxes.update_box_array_after_h = function (r_i, c_i, state) {
     }
     if (
         //both boxes around horizontal line
-        (state.h_board[r_i-1][c_i] === 1)
-        && (state.v_board[r_i-1][c_i] === 1)
-        && (state.v_board[r_i-1][c_i+1] === 1)
-        && (state.h_board[r_i+1][c_i] === 1)
+        (state.h_board[r_i - 1][c_i] === 1)
+        && (state.v_board[r_i - 1][c_i] === 1)
+        && (state.v_board[r_i - 1][c_i + 1] === 1)
+        && (state.h_board[r_i + 1][c_i] === 1)
         && (state.v_board[r_i][c_i] === 1)
-        && (state.v_board[r_i][c_i+1] === 1)
+        && (state.v_board[r_i][c_i + 1] === 1)
     ) {
-        const intermediate_board = ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1,
-        c_i, state.b_board);
+        const intermediate_board = ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            (r_i - 1),
+            c_i,
+            state.b_board
+        );
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i,
-        intermediate_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            c_i,
+            intermediate_board
+        );
     }
     if (
         // box above horizontal line
-        (state.h_board[r_i-1][c_i] === 1)
-        && (state.v_board[r_i-1][c_i] === 1)
-        && (state.v_board[r_i-1][c_i+1] === 1)
+        (state.h_board[r_i - 1][c_i] === 1)
+        && (state.v_board[r_i - 1][c_i] === 1)
+        && (state.v_board[r_i - 1][c_i + 1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i-1, c_i,
-        state.b_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            (r_i - 1),
+            c_i,
+            state.b_board
+        );
     }
     if (
         // box below horizonal line
-        (state.h_board[r_i+1][c_i] === 1)
+        (state.h_board[r_i + 1][c_i] === 1)
         && (state.v_board[r_i][c_i] === 1)
-        && (state.v_board[r_i][c_i+1] === 1)
+        && (state.v_board[r_i][c_i + 1] === 1)
     ) {
         add_moves = 0;
-        return ply_box_on_board(DotsNBoxes.player_to_ply(state), r_i, c_i, state.b_board);
+        return ply_box_on_board(
+            DotsNBoxes.player_to_ply(state),
+            r_i,
+            c_i,
+            state.b_board
+        );
     } else {
         add_moves = 1;
         return state.b_board;
@@ -288,8 +341,12 @@ DotsNBoxes.to_string = (board) => R.pipe(
  */
 DotsNBoxes.player_has_won = function (state) {
     if (
-        R.count(R.equals(1), R.flatten(state.v_board)) === (width+1)*(height)
-        && R.count(R.equals(1), R.flatten(state.h_board)) === (width)*(height+1)
+        R.count(R.equals(1), R.flatten(state.v_board)) === (
+            (width + 1) * (height)
+        )
+        && R.count(R.equals(1), R.flatten(state.h_board)) === (
+            (width) * (height + 1)
+        )
     ) {
         if (
             R.count(R.equals(1), R.flatten(state.b_board))
